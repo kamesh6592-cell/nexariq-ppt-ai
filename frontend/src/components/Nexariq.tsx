@@ -203,7 +203,8 @@ Return ONLY valid JSON:
 
 User Topic: "${prompt}"`;
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      // Updated API call to use backend endpoint
+      const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://your-backend-url.vercel.app' : 'http://localhost:5000'}/api/ai/generate-slides`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
