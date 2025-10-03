@@ -204,19 +204,19 @@ Return ONLY valid JSON:
 User Topic: "${prompt}"`;
 
       // Updated API call to use backend endpoint
-      const response = await fetch(`${process.env.NODE_ENV === 'production' ? 'https://your-backend-url.vercel.app' : 'http://localhost:5000'}/api/ai/generate-slides`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 4000,
-          messages: [
-            { role: "user", content: advancedPrompt }
-          ]
-        })
-      });
+      const response = await fetch(`${API_URL}/api/ai/generate-slides`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    prompt: advancedPrompt,
+    mode: selectedMode,
+    theme: selectedTheme,
+    tone: aiTone,
+    formality: formalityLevel
+  })
+});
 
       const data = await response.json();
       let responseText = data.content[0].text.trim();
