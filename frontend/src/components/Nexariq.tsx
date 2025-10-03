@@ -204,35 +204,41 @@ Return ONLY valid JSON:
 
 User Topic: "${prompt}"`;
 
-      // Updated API call to use backend endpoint
-      const response = await fetch(`${API_URL}/api/ai/generate-slides`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: advancedPrompt,
-          mode: selectedMode,
-          theme: selectedTheme,
-          tone: aiTone,
-          formality: formalityLevel
-        })
-      });
+     const response = await fetch(`${API_URL}/api/ai/generate-slides`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    prompt: advancedPrompt,
+    mode: selectedMode,
+    theme: selectedTheme,
+    tone: aiTone,
+    formality: formalityLevel
+  })
+});
 
-      const data = await response.json();
-      let responseText = data.content[0].text.trim();
-      responseText = responseText.replace(/```json\s*/, "").replace(/```\s*$/, "").trim();
-      
-      const slideData = JSON.parse(responseText);
-      setSlides(slideData.slides);
-      setPresentation({
-        title: slideData.title,
-        description: slideData.subtitle || '',
-        tags: slideData.metadata?.keyTakeaways || [],
-        isPublic: false,
-        collaborators: []
-      });
-      setCurrentSlide(0);
+if (!response.ok) {
+  throw new Error(`API Error: ${response.status}`);
+}
+
+const data = await response.json();
+
+// Check if data is already the slide format (from backend)
+// or if it's Claude's API response format
+let slideData;
+if (data.content && Array.isArray(data.content)) {
+  // Claude API format - extract text
+  let responseText = data.content[0].text.trim();
+  responseText = responseText.replace(/```json\s*/, "").replace(/```\s*$/, "").trim();
+  slideData = JSON.parse(responseText);
+} else if (data.slides && Array.isArray(data.slides)) {
+  // Backend already processed format
+  slideData = data;
+} else {
+  // Unexpected format
+  throw new Error('Unexpected response format from API');
+}
       
       // Auto-generate images for slides
       setTimeout(() => generateSlideImages(slideData.slides), 1000);
