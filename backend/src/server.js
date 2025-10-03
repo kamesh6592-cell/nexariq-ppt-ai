@@ -226,6 +226,17 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Nexariq Backend running on port ${PORT}`);
 });
+// Update CORS configuration in backend/src/server.js
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://nexariq-ppt-ai-noul.vercel.app', // UPDATE with your actual frontend URL
+    /\.vercel\.app$/ // Allows all Vercel preview deployments
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Vercel export
 module.exports = app;
