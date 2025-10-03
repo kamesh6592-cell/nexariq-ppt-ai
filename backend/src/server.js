@@ -17,7 +17,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://nexariq-platform.vercel.app',
-    'https://your-frontend-url.vercel.app', // UPDATE THIS after frontend deployment
+    'https://nexariq-ppt-ai-noul.vercel.app', // UPDATE THIS after frontend deployment
     /\.vercel\.app$/
   ],
   credentials: true
@@ -116,7 +116,7 @@ Topic: "${prompt}"`;
         "anthropic-version": "2023-06-01"
       },
       body: JSON.stringify({
-        model: "claude-3-sonnet-20240229",
+        model: "claude-sonnet-4-20250514",
         max_tokens: 4000,
         messages: [
           { role: "user", content: systemPrompt }
