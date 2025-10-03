@@ -1,3 +1,10 @@
-export const API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://vercel.com/aj-kameshs-projects/nexariq-ppt-ai'  // Update after backend deployment
-  : 'http://localhost:5000'
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://nexariq-ppt-ai.vercel.app/' // UPDATE THIS with your actual backend URL
+    : 'http://localhost:5000');
+
+export const config = {
+  apiUrl: API_URL,
+  isDevelopment: process.env.NODE_ENV === 'development',
+  isProduction: process.env.NODE_ENV === 'production'
+};
