@@ -89,6 +89,34 @@ const Nexariq = () => {
       secondary: '#e74c3c',
       border: 'rgba(255, 255, 255, 0.1)'
     },
+    'corporate-blue': {
+    name: 'Corporate Blue',
+    bg: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+    cardBg: 'rgba(30, 41, 59, 0.9)',
+    textColor: 'text-white',
+    accent: '#3b82f6',
+    secondary: '#64748b',
+    border: 'rgba(148, 163, 184, 0.2)'
+  },
+  'minimal-white': {
+    name: 'Minimal White',
+    bg: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
+    cardBg: 'rgba(255, 255, 255, 0.95)',
+    textColor: 'text-gray-900',
+    accent: '#2563eb',
+    secondary: '#64748b',
+    border: 'rgba(226, 232, 240, 1)'
+  },
+  'executive-gray': {
+    name: 'Executive Gray',
+    bg: 'linear-gradient(135deg, #18181b 0%, #27272a 100%)',
+    cardBg: 'rgba(39, 39, 42, 0.9)',
+    textColor: 'text-white',
+    accent: '#60a5fa',
+    secondary: '#94a3b8',
+    border: 'rgba(161, 161, 170, 0.2)'
+  },
+  
     'nature-zen': {
       name: 'Nature Zen',
       bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%)',
