@@ -7,6 +7,7 @@ import {
   Video, MessageSquare, Figma, PenTool, Lightbulb, Target, Award, TrendingUp, Clock,
   Shield, Cloud, Sliders, BookOpen, Briefcase, Heart, Zap as Bolt, Layers as Stack
 } from 'lucide-react';
+import { API_URL } from '../config'; // Add this import
 
 const Nexariq = () => {
   const [prompt, setPrompt] = useState('');
@@ -205,18 +206,18 @@ User Topic: "${prompt}"`;
 
       // Updated API call to use backend endpoint
       const response = await fetch(`${API_URL}/api/ai/generate-slides`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    prompt: advancedPrompt,
-    mode: selectedMode,
-    theme: selectedTheme,
-    tone: aiTone,
-    formality: formalityLevel
-  })
-});
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: advancedPrompt,
+          mode: selectedMode,
+          theme: selectedTheme,
+          tone: aiTone,
+          formality: formalityLevel
+        })
+      });
 
       const data = await response.json();
       let responseText = data.content[0].text.trim();
