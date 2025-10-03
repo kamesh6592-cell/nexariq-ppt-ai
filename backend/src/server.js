@@ -12,10 +12,12 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 
+// IMPORTANT: Update these URLs after deploying frontend
 app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://nexariq-platform.vercel.app',
+    'https://your-frontend-url.vercel.app', // UPDATE THIS after frontend deployment
     /\.vercel\.app$/
   ],
   credentials: true
@@ -39,16 +41,12 @@ const aiLimiter = rateLimit({
   max: 10
 });
 
-// Database connection
+// Database connection (optional)
 if (process.env.MONGODB_URI) {
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB error:', err));
 }
-
-// Models
-const User = require('./models/User');
-const Presentation = require('./models/Presentation');
 
 // Routes
 app.get('/api/health', (req, res) => {
@@ -66,6 +64,11 @@ app.post('/api/ai/generate-slides', aiLimiter, async (req, res) => {
 
     if (!prompt || prompt.trim().length === 0) {
       return res.status(400).json({ error: 'Prompt is required' });
+    }
+
+    if (!process.env.CLAUDE_API_KEY) {
+      console.error('CLAUDE_API_KEY not set');
+      return res.status(500).json({ error: 'API key not configured' });
     }
 
     const systemPrompt = `You are Nexariq AI, an advanced presentation generator. Create a comprehensive slide deck.
@@ -122,6 +125,8 @@ Topic: "${prompt}"`;
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Claude API error:', response.status, errorText);
       throw new Error(`Claude API error: ${response.status}`);
     }
 
@@ -191,7 +196,6 @@ app.get('/api/presentations', (req, res) => {
 
 app.post('/api/presentations', async (req, res) => {
   try {
-    // In production, save to database
     const presentation = {
       id: Date.now().toString(),
       ...req.body,
@@ -209,7 +213,6 @@ app.post('/api/export/pptx', (req, res) => {
   try {
     const { presentation } = req.body;
     
-    // Simulate PPTX generation
     res.json({ 
       message: 'PPTX export initiated',
       downloadUrl: '/api/download/demo.pptx'
